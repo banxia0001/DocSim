@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public TMP_Text workingText_P1;
 
     public BarController[] BC;
-
+    public Bar_PointController[] BP;
 
     public Patient patient;
     public Organ[] organs; 
@@ -26,16 +26,19 @@ public class GameController : MonoBehaviour
 
 
     public Organ[] organ_InMission;
+    public List<string> toolsAvaliable = new List<string>();
+
+    public string[] toolsInUse;
  
     //public enum OrgansOn { NA, Heart, Lung }
-    public enum correctTool { NA, Lancet02, Lancet07, Scissor, Forceps }
+    //public enum correctTool { NA, Lancet02, Lancet07, Scissor, Forceps }
 
     //public OrgansOn Mission_P0;
-    public correctTool Tool_P0;
+    //public correctTool Tool_P0;
 
 
     //public OrgansOn Mission_P1;
-    public correctTool Tool_P1;
+    //public correctTool Tool_P1;
 
     public float[] barNow;
     public float[] barMax;
@@ -65,7 +68,9 @@ public class GameController : MonoBehaviour
         //Ëæ»ú²¡ÈË±¸×¢£¬ÏÔÊ¾ÔÚÆÁÄ»×ó²à
         //ÏÔÊ¾Í¼Æ¬
         giveOrderToDoctor(0, patient.organList[Random.Range(0, patient.organList.Count)]);
+        giveToolToDoctor(0);
         giveOrderToDoctor(1, patient.organList[Random.Range(0, patient.organList.Count)]);
+        giveToolToDoctor(1);
 
     }
 
@@ -96,32 +101,20 @@ public class GameController : MonoBehaviour
 
     }
 
+    private void giveToolToDoctor(int playerNum)
+    {
+        int i = Random.Range(0, toolsAvaliable.Count);
+        toolsInUse[playerNum] = toolsAvaliable[i];
+        toolsAvaliable.Remove(toolsAvaliable[i]);
+    }
+
+
     private void giveOrderToDoctor(int playerNum, Organ organ)
     {
         organ_InMission[playerNum] = organ;
         patient.organList.Remove(organ);
         barNow[playerNum] = 0;
         barMax[playerNum] = Random.Range(organ.workOnTimeMin, organ.workOnTimeMax);
-
-
-        int i = Random.Range(0, 4);
-
-        if (playerNum == 0)
-        {
-            if (i == 0) Tool_P0 = correctTool.Forceps;
-            if (i == 1) Tool_P0 = correctTool.Lancet02;
-            if (i == 2) Tool_P0 = correctTool.Lancet07;
-            if (i == 3) Tool_P0 = correctTool.Scissor;
-        }
-
-
-        else
-        {
-            if (i == 0) Tool_P1 = correctTool.Forceps;
-            if (i == 1) Tool_P1 = correctTool.Lancet02;
-            if (i == 2) Tool_P1 = correctTool.Lancet07;
-            if (i == 3) Tool_P1 = correctTool.Scissor;
-        }
     }
 
     public void FixedUpdate()
@@ -133,25 +126,20 @@ public class GameController : MonoBehaviour
 
 
         TurnOffBools();
-        //BC[0].SetValue(barNow[0], barMax[0]);
-        //BC[1].SetValue(barNow[1], barMax[1]);
-
+     
         for (int i = 0; i < 2; i++)
         {
             if(organ_InMission[i] == null) BC[i].SetValue(0, 1);
             else BC[i].SetValue(barNow[i], barMax[i]);
 
         }
-        //if (isWorking_P0) barNow_P0 += 1 * Time.fixedDeltaTime;
-        //if (isWorking_P1) barNow_P1 += 1 * Time.fixedDeltaTime;
+
     }
 
 
 
     public void Update()
     {
-        
-
         if (Input.GetKey(KeyCode.UpArrow)) isOnHeart = true;
         if (Input.GetKey(KeyCode.DownArrow)) isOnLung = true;
         if (Input.GetKey(KeyCode.LeftArrow)) isOnKidney = true;
@@ -176,40 +164,34 @@ public class GameController : MonoBehaviour
     {
        
 
-
         if (organName == "Heart" && isOnHeart == false) return;
         if(organName == "Lung" && isOnLung == false) return;
         if(organName == "Kidney" && isOnKidney == false) return;
 
 
-
-        if (playerNum == 0)
-        {
-           
-            if (Tool_P0 == correctTool.Lancet02 && toolName == "Lancet02") working_on_Organ_03(0);
-            if (Tool_P0 == correctTool.Lancet07 && toolName == "Lancet07") working_on_Organ_03(0);
-            if (Tool_P0 == correctTool.Forceps && toolName == "Forceps") working_on_Organ_03(0);
-            if (Tool_P0 == correctTool.Scissor && toolName == "Scissor") working_on_Organ_03(0);
-        }
-
-        else
-        {
-            if (Tool_P1 == correctTool.Lancet02 && toolName == "Lancet02") working_on_Organ_03(1);
-            if (Tool_P1 == correctTool.Lancet07 && toolName == "Lancet07") working_on_Organ_03(1);
-            if (Tool_P1 == correctTool.Forceps && toolName == "Forceps") working_on_Organ_03(1);
-            if (Tool_P1 == correctTool.Scissor && toolName == "Scissor") working_on_Organ_03(1);
-        }
-       
+        if (toolsInUse[playerNum] == toolName) working_on_Organ_03(playerNum);
     }
 
 
     private void working_on_Organ_03(int playerNum)
     {
+        bool CHECK_HIT = BP[playerNum].checkPointHit();
+
+        if (CHECK_HIT == false)
+        {
+            // Íæ¼Òì­Ñª£¬Ê§°Ü£¬¼Ó¿ÉÒÉ¶È
+            return;
+        }
         barNow[playerNum]++;
 
         if (barNow[playerNum] >= barMax[playerNum])
         {
             organ_InMission[playerNum].loop--;
+
+            toolsAvaliable.Add(toolsInUse[playerNum]);
+            giveToolToDoctor(playerNum);
+
+
             if (organ_InMission[playerNum].loop <= 0)
             {
                 organ_InMission[playerNum] = null;
@@ -217,7 +199,6 @@ public class GameController : MonoBehaviour
                 if (patient.organList != null)
                     if (patient.organList.Count > 0)
                         giveOrderToDoctor(playerNum, patient.organList[Random.Range(0, patient.organList.Count)]);
-
             }
 
             else

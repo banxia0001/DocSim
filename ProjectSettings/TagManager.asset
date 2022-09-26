@@ -4,10 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Trigger
-  - Trigger2
-  - Monster
   - Ghost
+  - RayCast_Layer
+  - Bar_Wall_Layer
   layers:
   - Default
   - TransparentFX
@@ -15,7 +14,7 @@ TagManager:
   - Sprite
   - Water
   - UI
-  - 
+  - HitArea
   - 
   - 
   - 
