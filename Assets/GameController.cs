@@ -304,12 +304,22 @@ public class GameController : MonoBehaviour
     {
         bool CHECK_HIT = BP[playerNum].checkPointHit();
 
+        GameObject blood_1 = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+        blood_1.transform.parent = player[playerNum].bloodPoint.transform;
+        blood_1.transform.localPosition = new Vector3(0, 0, 0);
+        blood_1.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
         if (CHECK_HIT == false)
         {
-            GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
-            blood.transform.parent = player[playerNum].bloodPoint.transform;
-            blood.transform.localPosition = new Vector3(0,0,0);
-            blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            for (int i = 0; i < 4; i++)
+            {
+                GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+                blood.transform.parent = player[playerNum].bloodPoint.transform;
+                blood.transform.localPosition = new Vector3(0, 0, 0);
+                blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+            }
+
             // 玩家飙血，失败，加可疑度
             inceaseSUS();
             return;
