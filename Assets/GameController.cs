@@ -6,42 +6,41 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public TMP_Text workingText_P0;
-    public TMP_Text workingText_P1;
-
+  
     public BarController[] BC;
-    public Bar_PointController[] BP;
+    public Avatar_Controller[] player;
+    
+    public List<Tool> toolsAvaliable = new List<Tool>();
+    public Tool bloodSpecial;
+    public Tool boneSpecial;
 
     public Patient patient;
-    public Organ[] organs; 
-    // just for test
-    //public bool isOnLancet02;//2号手术刀
-    //public bool isOnLancet07;//7号手术刀
-    //public bool isOnScissor;//剪刀
-    //public bool isOnForceps;//镊子
+    public Organ[] organs;
+   
+
     [Space]
     public bool isOnHeart;
-    public bool isOnLung;
-    public bool isOnKidney;
+    public bool isOnBrain;
+    //public bool isOnBlood;
 
 
     public Organ[] organ_InMission;
-    public List<string> toolsAvaliable = new List<string>();
+    public Tool[] toolsInUse;
 
-    public string[] toolsInUse;
- 
-    //public enum OrgansOn { NA, Heart, Lung }
-    //public enum correctTool { NA, Lancet02, Lancet07, Scissor, Forceps }
-
-    //public OrgansOn Mission_P0;
-    //public correctTool Tool_P0;
+    public int  sawN_;
 
 
-    //public OrgansOn Mission_P1;
-    //public correctTool Tool_P1;
 
     public float[] barNow;
     public float[] barMax;
+
+    [Space]
+    public Bar_PointController[] BP;
+    public GameObject[] Bar;
+    public GameObject[] hitBox;
+    public Image[] toolImage;
+    public TMP_Text[] organText;
+
 
     public void Start()
     {
@@ -55,8 +54,8 @@ public class GameController : MonoBehaviour
     private void TurnOffBools()
     {
         isOnHeart = false;
-        isOnKidney = false;
-        isOnLung = false;
+        isOnBrain = false;
+        //isOnBlood = false;
     }
 
 
@@ -103,18 +102,55 @@ public class GameController : MonoBehaviour
 
     private void giveToolToDoctor(int playerNum)
     {
-        int i = Random.Range(0, toolsAvaliable.Count);
-        toolsInUse[playerNum] = toolsAvaliable[i];
-        toolsAvaliable.Remove(toolsAvaliable[i]);
+        Tool tool_Use = null;
+        if (organ_InMission[playerNum].Name == "Blood")
+        {
+            tool_Use = bloodSpecial;
+        }
+
+        else if (organ_InMission[playerNum].Name == "Brain")
+        {
+            int i2 = Random.Range(0, 2);
+            if (i2 == 0) 
+            {
+                tool_Use = boneSpecial;
+                Bar[playerNum].SetActive(false);
+            }
+
+            else
+            {
+                hitBox_Randoness(playerNum);
+                int i = Random.Range(0, toolsAvaliable.Count);
+                tool_Use = toolsAvaliable[i];
+                toolsAvaliable.Remove(toolsAvaliable[i]);
+            }
+
+        }
+
+        else
+        {
+            hitBox_Randoness(playerNum);
+            int i = Random.Range(0, toolsAvaliable.Count);
+            tool_Use = toolsAvaliable[i];
+            toolsAvaliable.Remove(toolsAvaliable[i]); 
+        }
+
+
+        toolsInUse[playerNum] = tool_Use;
+        toolImage[playerNum].sprite = tool_Use.image;
+        toolImage[playerNum].gameObject.GetComponent<Animator>().SetTrigger("bigger");
     }
 
 
     private void giveOrderToDoctor(int playerNum, Organ organ)
     {
+        Bar[playerNum].SetActive(true);
         organ_InMission[playerNum] = organ;
         patient.organList.Remove(organ);
         barNow[playerNum] = 0;
         barMax[playerNum] = Random.Range(organ.workOnTimeMin, organ.workOnTimeMax);
+
+        organText[playerNum].text = organ_InMission[playerNum].Name;
     }
 
     public void FixedUpdate()
@@ -131,22 +167,27 @@ public class GameController : MonoBehaviour
         {
             if(organ_InMission[i] == null) BC[i].SetValue(0, 1);
             else BC[i].SetValue(barNow[i], barMax[i]);
-
         }
-
     }
-
-
 
     public void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow)) isOnHeart = true;
-        if (Input.GetKey(KeyCode.DownArrow)) isOnLung = true;
-        if (Input.GetKey(KeyCode.LeftArrow)) isOnKidney = true;
+        //if (Input.GetKey(KeyCode.DownArrow)) isOnBlood = true;
+        if (Input.GetKey(KeyCode.LeftArrow)) isOnBrain = true;
 
-        if (Input.GetKeyDown(KeyCode.A)) workin_On_Organ_01("Lancet02");
-        if (Input.GetKeyDown(KeyCode.S)) workin_On_Organ_01("Lancet07");
-        if (Input.GetKeyDown(KeyCode.W)) workin_On_Organ_01("Scissor");
+        //if (Input.GetKeyDown(KeyCode.A)) workin_On_Organ_01("Lancet02");
+
+        if (Input.GetKeyDown(KeyCode.S)) working_on_Blood();
+
+
+        //锯子锯脑袋 单独的游戏
+        if (Input.GetKeyDown(KeyCode.W)) working_on_Brain(0);
+        if (Input.GetKeyDown(KeyCode.A)) working_on_Brain(1);
+
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) workin_On_Organ_01("Lancet02");
+        if (Input.GetKeyDown(KeyCode.DownArrow)) workin_On_Organ_01("Scissor");
         if (Input.GetKeyDown(KeyCode.D)) workin_On_Organ_01("Forceps");
     }
 
@@ -160,37 +201,111 @@ public class GameController : MonoBehaviour
             working_on_Organ_02(organ_InMission[1].Name, 1, toolName);
     }
 
+
+    private void working_on_Brain(int sawN)
+    {
+        if (organ_InMission[0].Name == "Brain" && toolsInUse[0].toolName == "Saw")
+            working_on_Brain_02(0, sawN);
+
+        if (organ_InMission[1].Name == "Brain" && toolsInUse[1].toolName == "Saw")
+            working_on_Brain_02(1, sawN);
+    }
+
+    private void working_on_Blood()
+    {
+        if (organ_InMission[0].Name == "Blood")
+            working_on_Organ_03(0);
+
+        if (organ_InMission[1].Name == "Blood")
+            working_on_Organ_03(1);
+    }
+
+    private void working_on_Brain_02(int playerNum, int sawN)
+    {
+        if(isOnBrain == false) return;
+       
+        if (sawN == sawN_)
+        {
+            barNow[playerNum]++;
+
+            if (sawN_ == 0) sawN_ = 1;
+            else sawN_ = 0;
+
+            player[playerNum].anim.SetTrigger("saw");
+
+            GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+            blood.transform.parent = player[playerNum].bloodPoint.transform;
+            blood.transform.localPosition = new Vector3(0, 0, 0);
+            blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+            checkOrganGet(playerNum);
+        }
+
+      
+    }
+
     private void working_on_Organ_02(string organName, int playerNum, string toolName)
     {
-       
-
         if (organName == "Heart" && isOnHeart == false) return;
-        if(organName == "Lung" && isOnLung == false) return;
-        if(organName == "Kidney" && isOnKidney == false) return;
+        if(organName == "Brain" && isOnBrain == false) return;
+        //if(organName == "Blood" && isOnBlood == false) return;
 
-
-        if (toolsInUse[playerNum] == toolName) working_on_Organ_03(playerNum);
+        if (toolsInUse[playerNum].toolName == toolName) working_on_Organ_03(playerNum);
     }
 
 
+
+    private void hitBox_Randoness(int playerNum)
+    {
+        //Debug.Log("playerNum");
+        hitBox[playerNum].transform.localPosition = new Vector3(Random.Range(-.3f,.3f), 0, 0);
+        hitBox[playerNum].transform.localScale = new Vector3(Random.Range(0.2f, 0.4f), 0.1f, 1);
+        BP[playerNum].speed = Random.Range(0.9f, 2f);
+    }
+
+
+    public GameObject blood_;
     private void working_on_Organ_03(int playerNum)
     {
         bool CHECK_HIT = BP[playerNum].checkPointHit();
 
         if (CHECK_HIT == false)
         {
+            GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+            blood.transform.parent = player[playerNum].bloodPoint.transform;
+            blood.transform.localPosition = new Vector3(0,0,0);
+            blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
             // 玩家飙血，失败，加可疑度
             return;
         }
+
+        if (toolsInUse[playerNum].toolName == "Needle")
+        {
+            player[playerNum].anim.SetTrigger("blood");
+        }
+        else player[playerNum].anim.SetTrigger("a");
+
+
         barNow[playerNum]++;
 
+        checkOrganGet(playerNum);
+    }
+
+
+    private void checkOrganGet(int playerNum)
+    {
         if (barNow[playerNum] >= barMax[playerNum])
         {
             organ_InMission[playerNum].loop--;
 
-            toolsAvaliable.Add(toolsInUse[playerNum]);
-            giveToolToDoctor(playerNum);
+            if (toolsInUse[playerNum].toolName == "Needle" || toolsInUse[playerNum].toolName == "Saw")
+            {
+                toolsInUse[playerNum] = null;
+            }
 
+            else toolsAvaliable.Add(toolsInUse[playerNum]);
+
+            giveToolToDoctor(playerNum);
 
             if (organ_InMission[playerNum].loop <= 0)
             {
@@ -207,7 +322,7 @@ public class GameController : MonoBehaviour
                 barMax[playerNum] = Random.Range(organ_InMission[playerNum].workOnTimeMin, organ_InMission[playerNum].workOnTimeMax);
             }
         }
+
+
     }
-
-
 }

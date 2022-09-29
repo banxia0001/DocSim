@@ -33,7 +33,7 @@ public class Bar_PointController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("!!");
+        //Debug.Log("!!");
         if (other.gameObject.CompareTag("Bar_Wall_Layer"))
         {
             speed = -speed;
