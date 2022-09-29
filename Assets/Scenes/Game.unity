@@ -477,6 +477,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3045000783427998915, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045000783427998915, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045000783427998915, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -527,6 +535,10 @@ PrefabInstance:
     - target: {fileID: 3045000783427998972, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
       propertyPath: m_Name
       value: Slider (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045000783427998972, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
@@ -652,6 +664,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &233976267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3045000783427998972, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
+  m_PrefabInstance: {fileID: 162736847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &233976268 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3045000783427998914, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
+  m_PrefabInstance: {fileID: 162736847}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233976267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2df50709c2c054eabab83ffc0968ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &233976269
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233976267}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f6f42bd105b6e364ab38fa63a73f6871, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &238706840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2942,6 +2989,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176885033}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1196905082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4967453414918397517, guid: 581669d1ce2aac04fa202319146398f3, type: 3}
+  m_PrefabInstance: {fileID: 4967453414754640307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1237529214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3045000783427998914, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
@@ -3371,7 +3423,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "//////////////////////////////////////////////////////////////////////////////////\n\n/////////\n\t\t/////////"
+  m_text: 'Patient Notes:
+
+    My life is on your hand doctor. Please save me.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3477,6 +3531,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ec0b5f9de814c344a16656a424e45d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  susAnim: {fileID: 233976269}
+  susBar: {fileID: 233976268}
+  susNow: 0
   BC:
   - {fileID: 1467535787}
   - {fileID: 1237529214}
@@ -3493,6 +3550,9 @@ MonoBehaviour:
   bloodSpecial:
     image: {fileID: 21300000, guid: 802798351ea8142468d0fd003182ef09, type: 3}
     toolName: Needle
+  boneSpecial:
+    image: {fileID: 21300000, guid: 9510d9086810ca44a886b9cb7b40ea01, type: 3}
+    toolName: Saw
   patient:
     organList: []
     Description: 'Patient Notes:
@@ -3513,6 +3573,7 @@ MonoBehaviour:
     toolName: 
   - image: {fileID: 0}
     toolName: 
+  sawN_: 0
   barNow:
   - 0
   - 0
@@ -3522,6 +3583,9 @@ MonoBehaviour:
   BP:
   - {fileID: 321205701}
   - {fileID: 1354599247}
+  Bar:
+  - {fileID: 1196905082}
+  - {fileID: 1759859950}
   hitBox:
   - {fileID: 1983567406}
   - {fileID: 352849701}
@@ -4066,6 +4130,11 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3045000783427998915, guid: efdb066ac43ffbb43ab1a0a2c4917662, type: 3}
   m_PrefabInstance: {fileID: 1721671065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1759859950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4967453414918397517, guid: 581669d1ce2aac04fa202319146398f3, type: 3}
+  m_PrefabInstance: {fileID: 1354599246}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1773263665
 GameObject:

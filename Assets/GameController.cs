@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-  
+    public Animator susAnim;
+    public BarController susBar;
+    public float susNow;
+
     public BarController[] BC;
     public Avatar_Controller[] player;
     
@@ -34,6 +38,7 @@ public class GameController : MonoBehaviour
     public float[] barNow;
     public float[] barMax;
 
+
     [Space]
     public Bar_PointController[] BP;
     public GameObject[] Bar;
@@ -45,7 +50,7 @@ public class GameController : MonoBehaviour
     public void Start()
     {
         TurnOffBools();
-
+        susBar.SetValue(0, 100);
 
         NewPatient_Coming();
 
@@ -241,9 +246,39 @@ public class GameController : MonoBehaviour
             checkOrganGet(playerNum);
         }
 
+        else 
+        {
+
+            player[playerNum].anim.SetTrigger("saw_bad");
+
+            for (int i = 0; i < 4; i++)
+            {
+                GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+                blood.transform.parent = player[playerNum].bloodPoint.transform;
+                blood.transform.localPosition = new Vector3(0, 0, 0);
+                blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+            }
+
+            inceaseSUS();
+        }
+
       
     }
 
+
+    private void inceaseSUS()
+    {
+        susNow++;
+        susBar.SetValue(susNow, 100);
+        susAnim.SetTrigger("haha");
+     
+        if (susNow == 100)
+        {
+            
+            SceneManager.LoadScene(0);
+        }
+    }
     private void working_on_Organ_02(string organName, int playerNum, string toolName)
     {
         if (organName == "Heart" && isOnHeart == false) return;
@@ -276,6 +311,7 @@ public class GameController : MonoBehaviour
             blood.transform.localPosition = new Vector3(0,0,0);
             blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
             // 玩家飙血，失败，加可疑度
+            inceaseSUS();
             return;
         }
 
