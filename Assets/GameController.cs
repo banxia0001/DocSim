@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    public Sprite[] head;
+    public SpriteRenderer head_;
+
     public Animator susAnim;
     public BarController susBar;
     public float susNow;
@@ -68,6 +71,7 @@ public class GameController : MonoBehaviour
     {
         choose_Organ_Setup();
         ShuffleOrganList();
+        head_.sprite = head[Random.Range(0, head.Length)];
 
         //Ëæ»ú²¡ÈË±¸×¢£¬ÏÔÊ¾ÔÚÆÁÄ»×ó²à
         //ÏÔÊ¾Í¼Æ¬
@@ -107,6 +111,10 @@ public class GameController : MonoBehaviour
 
     private void giveToolToDoctor(int playerNum)
     {
+        if (organ_InMission[playerNum] == null) return;
+
+            Bar[playerNum].SetActive(true);
+
         Tool tool_Use = null;
         if (organ_InMission[playerNum].Name == "Blood")
         {
@@ -166,6 +174,17 @@ public class GameController : MonoBehaviour
         }
 
 
+        if (organ_InMission[0] == null)
+        {
+            organText[0].text = "null";
+        }
+
+        if (organ_InMission[1] == null)
+        {
+            organText[1].text = "null";
+        }
+
+
         TurnOffBools();
      
         for (int i = 0; i < 2; i++)
@@ -182,7 +201,6 @@ public class GameController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow)) isOnBrain = true;
 
         //if (Input.GetKeyDown(KeyCode.A)) workin_On_Organ_01("Lancet02");
-
         if (Input.GetKeyDown(KeyCode.S)) working_on_Blood();
 
 
@@ -227,8 +245,10 @@ public class GameController : MonoBehaviour
 
     private void working_on_Brain_02(int playerNum, int sawN)
     {
-        if(isOnBrain == false) return;
-       
+        if (organ_InMission[playerNum] == null) return;
+        if (isOnBrain == false) return;
+        toolImage[playerNum].gameObject.GetComponent<Animator>().SetTrigger("bigger");
+
         if (sawN == sawN_)
         {
             barNow[playerNum]++;
@@ -270,15 +290,33 @@ public class GameController : MonoBehaviour
     private void inceaseSUS()
     {
         susNow++;
-        susBar.SetValue(susNow, 100);
+        susBar.SetValue(susNow, 20);
         susAnim.SetTrigger("haha");
      
-        if (susNow == 100)
+        if (susNow == 20)
         {
-            
-            SceneManager.LoadScene(0);
+            StartCoroutine(GameOver());
+  
         }
+
+
     }
+
+    public Animator gameOverAnim;
+    public TMP_Text scoreText;
+    public int score;
+
+    IEnumerator GameOver()
+    {
+        gameOverAnim.SetTrigger("1");
+        yield return new WaitForSeconds(0.5f);
+
+        scoreText.text = "You are under arrest. Be a good person in your next life.\n" + score;
+        yield return new WaitForSeconds(3f);
+
+        SceneManager.LoadScene(0);
+    }
+
     private void working_on_Organ_02(string organName, int playerNum, string toolName)
     {
         if (organName == "Heart" && isOnHeart == false) return;
@@ -302,6 +340,9 @@ public class GameController : MonoBehaviour
     public GameObject blood_;
     private void working_on_Organ_03(int playerNum)
     {
+        if (organ_InMission[playerNum] == null) return;
+        toolImage[playerNum].gameObject.GetComponent<Animator>().SetTrigger("bigger");
+
         bool CHECK_HIT = BP[playerNum].checkPointHit();
 
         GameObject blood_1 = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
@@ -340,9 +381,11 @@ public class GameController : MonoBehaviour
 
     private void checkOrganGet(int playerNum)
     {
+        if (organ_InMission[playerNum] == null) return;
         if (barNow[playerNum] >= barMax[playerNum])
         {
             organ_InMission[playerNum].loop--;
+          
 
             if (toolsInUse[playerNum].toolName == "Needle" || toolsInUse[playerNum].toolName == "Saw")
             {
@@ -355,11 +398,32 @@ public class GameController : MonoBehaviour
 
             if (organ_InMission[playerNum].loop <= 0)
             {
+                // StartCoroutine(checkOrganGet_1(playerNum, organ_InMission[playerNum].sprite));
+                srn[playerNum].gameObject.SetActive(true);
+                srn[playerNum].sprite = organ_InMission[playerNum].sprite;
+                player[playerNum].anim.SetTrigger("getStuff");
+          
                 organ_InMission[playerNum] = null;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+                    blood.transform.parent = player[playerNum].bloodPoint.transform;
+                    blood.transform.localPosition = new Vector3(0, 0, 0);
+                    blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+
 
                 if (patient.organList != null)
                     if (patient.organList.Count > 0)
+                    {
                         giveOrderToDoctor(playerNum, patient.organList[Random.Range(0, patient.organList.Count)]);
+                        giveToolToDoctor(playerNum);
+                    }
+                        
+
+                score += Random.Range(1, 3);
+
             }
 
             else
@@ -371,4 +435,28 @@ public class GameController : MonoBehaviour
 
 
     }
+
+    public SpriteRenderer[] srn;
+
+    //IEnumerator checkOrganGet_1(int playerNum, Sprite organSprite)
+    //{
+    //    organ_InMission[playerNum] = null;
+    //    player[playerNum].anim.SetTrigger("getStuff");
+    //    yield return new WaitForSeconds(.05f);
+    //    srn[playerNum].sprite = organSprite;
+
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+    //        blood.transform.parent = player[playerNum].bloodPoint.transform;
+    //        blood.transform.localPosition = new Vector3(0, 0, 0);
+    //        blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+    //    }
+
+    //    yield return new WaitForSeconds(.05f);
+    //    if (patient.organList != null)
+    //        if (patient.organList.Count > 0)
+    //            giveOrderToDoctor(playerNum, patient.organList[Random.Range(0, patient.organList.Count)]);
+    //}
+
 }
