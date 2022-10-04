@@ -113,7 +113,7 @@ public class GameController : MonoBehaviour
     {
         if (organ_InMission[playerNum] == null) return;
 
-            Bar[playerNum].SetActive(true);
+        Bar[playerNum].SetActive(true);
 
         Tool tool_Use = null;
         if (organ_InMission[playerNum].Name == "Blood")
@@ -177,11 +177,13 @@ public class GameController : MonoBehaviour
         if (organ_InMission[0] == null)
         {
             organText[0].text = "null";
+            Bar[0].SetActive(false);
         }
 
         if (organ_InMission[1] == null)
         {
             organText[1].text = "null";
+            Bar[1].SetActive(false);
         }
 
 
