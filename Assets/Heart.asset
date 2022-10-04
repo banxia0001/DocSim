@@ -16,5 +16,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 1ec9ffef86e03d740ad0605550eb6825, type: 3}
   loop: 2
   loopMax: 2
-  workOnTimeMax: 15
-  workOnTimeMin: 5
+  workOnTimeMax: 8
+  workOnTimeMin: 6

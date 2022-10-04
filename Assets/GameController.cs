@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
     [Space]
     public bool isOnHeart;
     public bool isOnBrain;
-    //public bool isOnBlood;
+    public bool isOnLung;
 
 
     public Organ[] organ_InMission;
@@ -63,6 +63,7 @@ public class GameController : MonoBehaviour
     {
         isOnHeart = false;
         isOnBrain = false;
+        isOnLung = false;
         //isOnBlood = false;
     }
 
@@ -199,7 +200,7 @@ public class GameController : MonoBehaviour
     public void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow)) isOnHeart = true;
-        //if (Input.GetKey(KeyCode.DownArrow)) isOnBlood = true;
+        if (Input.GetKey(KeyCode.DownArrow)) isOnLung = true;
         if (Input.GetKey(KeyCode.LeftArrow)) isOnBrain = true;
 
         //if (Input.GetKeyDown(KeyCode.A)) workin_On_Organ_01("Lancet02");
@@ -323,6 +324,7 @@ public class GameController : MonoBehaviour
     {
         if (organName == "Heart" && isOnHeart == false) return;
         if(organName == "Brain" && isOnBrain == false) return;
+        if(organName == "Lung" && isOnLung == false) return;
         //if(organName == "Blood" && isOnBlood == false) return;
 
         if (toolsInUse[playerNum].toolName == toolName) working_on_Organ_03(playerNum);

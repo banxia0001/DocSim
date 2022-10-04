@@ -91,14 +91,14 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: 11
+  - name: "\u56FE\u5C423"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 21
+      x: 91
       y: 473
       width: 44
       height: 44
@@ -112,7 +112,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -287, y: 161}
+    uvTransform: {x: -217, y: 161}
   - name: 1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -120,7 +120,7 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 56
+      x: 143
       y: 421
       width: 35
       height: 46
@@ -134,7 +134,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -238, y: 194}
+    uvTransform: {x: -151, y: 194}
   - name: 2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -142,7 +142,7 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
+      x: 91
       y: 421
       width: 44
       height: 44
@@ -156,7 +156,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -276, y: 65}
+    uvTransform: {x: -189, y: 65}
   - name: "\u56FE\u5C422"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -179,7 +179,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -145, y: 4}
-  - name: "\u56FE\u5C423"
+  - name: "\u56FE\u5C424"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -187,9 +187,9 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 473
-      width: 9
-      height: 30
+      y: 421
+      width: 81
+      height: 87
     spriteID: debba9b675040534284d309b88b3da65
     internalID: 0
     spriteBone: []
@@ -200,7 +200,29 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -304, y: 161}
+    uvTransform: {x: -259, y: 203}
+  - name: 11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 108
+      y: 473
+      width: 9
+      height: 30
+    spriteID: 1a14cf9d755b1b74d844b826436ea0a1
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -200, y: 161}
   platformSettings: []
   mosaicLayers: 1
   documentPivot: {x: 0, y: 0}
@@ -220,34 +242,41 @@ ScriptedImporter:
   characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
+  - name: "\u56FE\u5C424"
+    spriteName: "\u56FE\u5C424"
+    isGroup: 0
+    parentIndex: -1
+    spriteID: debba9b675040534284d309b88b3da65
+    layerID: 7
+    mosaicPosition: {x: 4, y: 421}
   - name: 2
     spriteName: 2
     isGroup: 0
     parentIndex: -1
     spriteID: d4b2342d4a0494d419b18cde9f95d8a0
     layerID: 6
-    mosaicPosition: {x: 4, y: 421}
+    mosaicPosition: {x: 91, y: 421}
   - name: 1
     spriteName: 1
     isGroup: 0
     parentIndex: -1
     spriteID: 77b54acb21d1d064fb17c01cd9836237
     layerID: 5
-    mosaicPosition: {x: 56, y: 421}
+    mosaicPosition: {x: 143, y: 421}
   - name: "\u56FE\u5C423"
     spriteName: "\u56FE\u5C423"
     isGroup: 0
     parentIndex: -1
-    spriteID: debba9b675040534284d309b88b3da65
-    layerID: 7
-    mosaicPosition: {x: 4, y: 473}
+    spriteID: cfce3a3e1e8be384394c5086d7cce6bb
+    layerID: 4
+    mosaicPosition: {x: 91, y: 473}
   - name: 11
     spriteName: 11
     isGroup: 0
     parentIndex: -1
-    spriteID: cfce3a3e1e8be384394c5086d7cce6bb
-    layerID: 4
-    mosaicPosition: {x: 21, y: 473}
+    spriteID: 1a14cf9d755b1b74d844b826436ea0a1
+    layerID: 3
+    mosaicPosition: {x: 108, y: 473}
   - name: "\u56FE\u5C422"
     spriteName: "\u56FE\u5C422"
     isGroup: 0

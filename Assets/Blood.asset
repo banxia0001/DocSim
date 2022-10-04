@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Blood
   sprite: {fileID: 21300000, guid: 57bfa24c02709f84fbbc6369ade71a15, type: 3}
-  loop: 15
-  loopMax: 15
-  workOnTimeMax: 3
-  workOnTimeMin: 1
+  loop: 3
+  loopMax: 3
+  workOnTimeMax: 10
+  workOnTimeMin: 8

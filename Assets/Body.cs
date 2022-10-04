@@ -6,7 +6,7 @@ public class Body : MonoBehaviour
 {
     public GameObject heart;
     public GameObject brain;
-    public GameObject blood;
+    public GameObject Lung;
     public GameController GC;
     // Update is called once per frame
     void LateUpdate()
@@ -17,7 +17,7 @@ public class Body : MonoBehaviour
         if (GC.isOnBrain) brain.SetActive(true);
         else brain.SetActive(false);
 
-        //if (GC.isOnBlood) blood.SetActive(true);
-        //else blood.SetActive(false);
+        if (GC.isOnLung) Lung.SetActive(true);
+        else Lung.SetActive(false);
     }
 }
