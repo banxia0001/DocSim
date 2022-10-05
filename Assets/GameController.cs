@@ -213,7 +213,7 @@ public class GameController : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) workin_On_Organ_01("Lancet02");
-        if (Input.GetKeyDown(KeyCode.DownArrow)) workin_On_Organ_01("Scissor");
+        if (Input.GetKeyDown(KeyCode.F)) workin_On_Organ_01("Scissor");
         if (Input.GetKeyDown(KeyCode.D)) workin_On_Organ_01("Forceps");
     }
 
