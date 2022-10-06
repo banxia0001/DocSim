@@ -61,9 +61,9 @@ public class GameController : MonoBehaviour
 
     private void TurnOffBools()
     {
-        isOnHeart = false;
-        isOnBrain = false;
-        isOnLung = false;
+        //isOnHeart = false;
+        //isOnBrain = false;
+        //isOnLung = false;
         //isOnBlood = false;
     }
 
@@ -197,34 +197,62 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public bool isOnLancet02;
+    public bool isOnScissor;
+    public bool isOnForceps;
+
     public void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow)) isOnHeart = true;
-        if (Input.GetKey(KeyCode.DownArrow)) isOnLung = true;
-        if (Input.GetKey(KeyCode.LeftArrow)) isOnBrain = true;
 
-        //if (Input.GetKeyDown(KeyCode.A)) workin_On_Organ_01("Lancet02");
+
+        if (Input.GetKeyDown(KeyCode.F)) isOnScissor = true;
+        if (Input.GetKeyUp(KeyCode.F)) isOnScissor = false;
+
+        if (Input.GetKeyDown(KeyCode.D)) isOnForceps = true;
+        if (Input.GetKeyUp(KeyCode.D)) isOnForceps = false;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) isOnScissor = true;
+        if (Input.GetKeyUp(KeyCode.RightArrow)) isOnScissor = false;
+
+
+
+        if (Input.GetKeyDown(KeyCode.UpArrow)) isOnHeart = true;
+        if (Input.GetKeyUp(KeyCode.UpArrow)) isOnHeart = false;
+
+        if (Input.GetKeyDown(KeyCode.DownArrow)) isOnLung = true;
+        if (Input.GetKeyUp(KeyCode.DownArrow)) isOnLung = false;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) isOnBrain = true;
+        if (Input.GetKeyUp(KeyCode.LeftArrow)) isOnBrain = false;
+
+
+
+      
+
         if (Input.GetKeyDown(KeyCode.S)) working_on_Blood();
 
 
-        //锯子锯脑袋 单独的游戏
+        ////锯子锯脑袋 单独的游戏
         if (Input.GetKeyDown(KeyCode.W)) working_on_Brain(0);
         if (Input.GetKeyDown(KeyCode.A)) working_on_Brain(1);
 
+        if (Input.GetKeyDown(KeyCode.UpArrow)) workin_On_Organ_01("Heart");
+        if (Input.GetKeyDown(KeyCode.DownArrow)) workin_On_Organ_01("Lung");
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) workin_On_Organ_01("Brain");
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) workin_On_Organ_01("Lancet02");
-        if (Input.GetKeyDown(KeyCode.F)) workin_On_Organ_01("Scissor");
-        if (Input.GetKeyDown(KeyCode.D)) workin_On_Organ_01("Forceps");
+        //if (Input.GetKeyDown(KeyCode.RightArrow)) workin_On_Organ_01("Lancet02");
+        //if (Input.GetKeyDown(KeyCode.F)) workin_On_Organ_01("Scissor");
+        //if (Input.GetKeyDown(KeyCode.D)) workin_On_Organ_01("Forceps");
     }
 
 
-    private void workin_On_Organ_01(string toolName)
+    private void workin_On_Organ_01(string organName)
     {
         if (organ_InMission[0] != null)
-            working_on_Organ_02(organ_InMission[0].Name, 0, toolName);
+            working_on_Organ_02(toolsInUse[0].toolName, 0, organName);
 
         if (organ_InMission[1] != null)
-            working_on_Organ_02(organ_InMission[1].Name, 1, toolName);
+            working_on_Organ_02(toolsInUse[1].toolName, 1, organName);
     }
 
 
@@ -320,14 +348,14 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    private void working_on_Organ_02(string organName, int playerNum, string toolName)
+    private void working_on_Organ_02(string toolName, int playerNum, string organName)
     {
-        if (organName == "Heart" && isOnHeart == false) return;
-        if(organName == "Brain" && isOnBrain == false) return;
-        if(organName == "Lung" && isOnLung == false) return;
+        if (toolName == "Lancet02" && isOnLancet02 == false) return;
+        if(toolName == "Scissor" && isOnScissor == false) return;
+        if(toolName == "Forceps" && isOnForceps == false) return;
         //if(organName == "Blood" && isOnBlood == false) return;
 
-        if (toolsInUse[playerNum].toolName == toolName) working_on_Organ_03(playerNum);
+        if (organ_InMission[playerNum].Name == organName) working_on_Organ_03(playerNum);
     }
 
 
