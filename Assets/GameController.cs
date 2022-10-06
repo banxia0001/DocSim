@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour
     public Sprite[] head;
     public SpriteRenderer head_;
 
+    public AudioSource[] sound;
+
+
     public Animator susAnim;
     public BarController susBar;
     public float susNow;
@@ -417,7 +420,8 @@ public class GameController : MonoBehaviour
         if (barNow[playerNum] >= barMax[playerNum])
         {
             organ_InMission[playerNum].loop--;
-          
+            sound[Random.Range(0, sound.Length)].Play();
+
 
             if (toolsInUse[playerNum].toolName == "Needle" || toolsInUse[playerNum].toolName == "Saw")
             {
