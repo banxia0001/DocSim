@@ -214,8 +214,8 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) isOnForceps = true;
         if (Input.GetKeyUp(KeyCode.D)) isOnForceps = false;
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) isOnScissor = true;
-        if (Input.GetKeyUp(KeyCode.RightArrow)) isOnScissor = false;
+        if (Input.GetKeyDown(KeyCode.RightArrow)) isOnLancet02 = true;
+        if (Input.GetKeyUp(KeyCode.RightArrow)) isOnLancet02 = false;
 
 
 
@@ -283,41 +283,53 @@ public class GameController : MonoBehaviour
         if (isOnBrain == false) return;
         toolImage[playerNum].gameObject.GetComponent<Animator>().SetTrigger("bigger");
 
-        if (sawN == sawN_)
+
+        barNow[playerNum]++;
+        for (int i = 0; i < 4; i++)
         {
-            barNow[playerNum]++;
-
-            if (sawN_ == 0) sawN_ = 1;
-            else sawN_ = 0;
-
-            player[playerNum].anim.SetTrigger("saw");
-
             GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
             blood.transform.parent = player[playerNum].bloodPoint.transform;
             blood.transform.localPosition = new Vector3(0, 0, 0);
             blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-            checkOrganGet(playerNum);
         }
 
-        else 
-        {
+        checkOrganGet(playerNum);
 
-            player[playerNum].anim.SetTrigger("saw_bad");
 
-            for (int i = 0; i < 4; i++)
-            {
-                GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
-                blood.transform.parent = player[playerNum].bloodPoint.transform;
-                blood.transform.localPosition = new Vector3(0, 0, 0);
-                blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        //if (sawN == sawN_)
+        //{
+        //    barNow[playerNum]++;
 
-            }
+        //    if (sawN_ == 0) sawN_ = 1;
+        //    else sawN_ = 0;
 
-            inceaseSUS();
-        }
+        //    player[playerNum].anim.SetTrigger("saw");
 
-      
+        //    GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+        //    blood.transform.parent = player[playerNum].bloodPoint.transform;
+        //    blood.transform.localPosition = new Vector3(0, 0, 0);
+        //    blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+        //    checkOrganGet(playerNum);
+        //}
+
+        //else 
+        //{
+
+        //    player[playerNum].anim.SetTrigger("saw_bad");
+
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        GameObject blood = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
+        //        blood.transform.parent = player[playerNum].bloodPoint.transform;
+        //        blood.transform.localPosition = new Vector3(0, 0, 0);
+        //        blood.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+        //    }
+
+        //   // inceaseSUS();
+        //}
     }
 
 
