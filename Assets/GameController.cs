@@ -365,9 +365,11 @@ public class GameController : MonoBehaviour
 
     private void working_on_Organ_02(string toolName, int playerNum, string organName)
     {
-        if (toolName == "Lancet02" && isOnLancet02 == false) return;
+        if(toolName == "Lancet02" && isOnLancet02 == false) return;
         if(toolName == "Scissor" && isOnScissor == false) return;
         if(toolName == "Forceps" && isOnForceps == false) return;
+
+        if (toolName == "Saw") return;
         //if(organName == "Blood" && isOnBlood == false) return;
 
         if (organ_InMission[playerNum].Name == organName) working_on_Organ_03(playerNum);
