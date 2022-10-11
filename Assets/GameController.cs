@@ -381,8 +381,8 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("playerNum");
         hitBox[playerNum].transform.localPosition = new Vector3(Random.Range(-.3f,.3f), 0, 0);
-        hitBox[playerNum].transform.localScale = new Vector3(Random.Range(0.2f, 0.4f), 0.1f, 1);
-        BP[playerNum].speed = Random.Range(0.9f, 2f);
+        hitBox[playerNum].transform.localScale = new Vector3(Random.Range(0.3f, 0.6f), 0.1f, 1);
+        BP[playerNum].speed = Random.Range(1.2f, 2.4f);
     }
 
 
