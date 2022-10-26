@@ -9,10 +9,12 @@ public class GameController : MonoBehaviour
 {
     public Sprite[] head;
     public SpriteRenderer head_;
-
+    public Animator animC;
     public AudioSource[] sound;
 
+    public float diff;
 
+    public Animator[] barAnims;
     public Animator susAnim;
     public BarController susBar;
     public float susNow;
@@ -26,8 +28,8 @@ public class GameController : MonoBehaviour
 
     public Patient patient;
     public Organ[] organs;
-   
 
+    public GameObject[] circle;
     [Space]
     public bool isOnHeart;
     public bool isOnBrain;
@@ -59,7 +61,7 @@ public class GameController : MonoBehaviour
         susBar.SetValue(0, 100);
 
         NewPatient_Coming();
-
+        diff = 0;
     }
 
     private void TurnOffBools()
@@ -116,8 +118,9 @@ public class GameController : MonoBehaviour
     private void giveToolToDoctor(int playerNum)
     {
         if (organ_InMission[playerNum] == null) return;
-
+        
         Bar[playerNum].SetActive(true);
+        circle[playerNum].SetActive(true);
 
         Tool tool_Use = null;
         if (organ_InMission[playerNum].Name == "Blood")
@@ -131,6 +134,7 @@ public class GameController : MonoBehaviour
             if (i2 == 0) 
             {
                 tool_Use = boneSpecial;
+                circle[playerNum].SetActive(false);
                 Bar[playerNum].SetActive(false);
             }
 
@@ -162,6 +166,7 @@ public class GameController : MonoBehaviour
     private void giveOrderToDoctor(int playerNum, Organ organ)
     {
         Bar[playerNum].SetActive(true);
+        circle[playerNum].SetActive(false);
         organ_InMission[playerNum] = organ;
         patient.organList.Remove(organ);
         barNow[playerNum] = 0;
@@ -181,12 +186,15 @@ public class GameController : MonoBehaviour
         if (organ_InMission[0] == null)
         {
             organText[0].text = "null";
+            circle[0].SetActive(false);
             Bar[0].SetActive(false);
+          
         }
 
         if (organ_InMission[1] == null)
         {
             organText[1].text = "null";
+            circle[1].SetActive(false);
             Bar[1].SetActive(false);
         }
 
@@ -261,19 +269,22 @@ public class GameController : MonoBehaviour
 
     private void working_on_Brain(int sawN)
     {
-        if (organ_InMission[0].Name == "Brain" && toolsInUse[0].toolName == "Saw")
+        if (organ_InMission[0] != null && toolsInUse[0] != null)
+            if (organ_InMission[0].Name == "Brain" && toolsInUse[0].toolName == "Saw")
             working_on_Brain_02(0, sawN);
-
-        if (organ_InMission[1].Name == "Brain" && toolsInUse[1].toolName == "Saw")
+        if (organ_InMission[1] != null && toolsInUse[1] != null)
+            if (organ_InMission[1].Name == "Brain" && toolsInUse[1].toolName == "Saw")
             working_on_Brain_02(1, sawN);
     }
 
     private void working_on_Blood()
     {
-        if (organ_InMission[0].Name == "Blood")
-            working_on_Organ_03(0);
+        if (organ_InMission[0] != null)
+            if (organ_InMission[0].Name == "Blood")
+                working_on_Organ_03(0);
 
-        if (organ_InMission[1].Name == "Blood")
+        if (organ_InMission[1] != null)
+            if (organ_InMission[1].Name == "Blood")
             working_on_Organ_03(1);
     }
 
@@ -335,6 +346,7 @@ public class GameController : MonoBehaviour
 
     private void inceaseSUS()
     {
+        animC.SetTrigger("a");
         susNow++;
         susBar.SetValue(susNow, 20);
         susAnim.SetTrigger("haha");
@@ -357,7 +369,7 @@ public class GameController : MonoBehaviour
         gameOverAnim.SetTrigger("1");
         yield return new WaitForSeconds(0.5f);
 
-        scoreText.text = "You are under arrest. Be a good person in your next life.\n" + score;
+        scoreText.text = "You are under arrest. Be a good person ina your next life.\n" + "Your Score:" + score;
         yield return new WaitForSeconds(3f);
 
         SceneManager.LoadScene(0);
@@ -381,8 +393,8 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("playerNum");
         hitBox[playerNum].transform.localPosition = new Vector3(Random.Range(-.3f,.3f), 0, 0);
-        hitBox[playerNum].transform.localScale = new Vector3(Random.Range(0.2f, 0.4f), 0.1f, 1);
-        BP[playerNum].speed = Random.Range(0.9f, 2f);
+        hitBox[playerNum].transform.localScale = new Vector3(Random.Range(0.3f, 0.45f), 0.1f, 1);
+        BP[playerNum].speed = Random.Range(1f + diff, 1.3f + diff);
     }
 
 
@@ -391,7 +403,7 @@ public class GameController : MonoBehaviour
     {
         if (organ_InMission[playerNum] == null) return;
         toolImage[playerNum].gameObject.GetComponent<Animator>().SetTrigger("bigger");
-
+        barAnims[playerNum].SetTrigger("a");
         bool CHECK_HIT = BP[playerNum].checkPointHit();
 
         GameObject blood_1 = Instantiate(blood_, player[playerNum].bloodPoint.transform.position, Quaternion.identity) as GameObject;
@@ -435,6 +447,8 @@ public class GameController : MonoBehaviour
         {
             organ_InMission[playerNum].loop--;
             sound[Random.Range(0, sound.Length)].Play();
+
+            diff += 0.045f;
 
 
             if (toolsInUse[playerNum].toolName == "Needle" || toolsInUse[playerNum].toolName == "Saw")
